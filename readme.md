@@ -9,7 +9,7 @@ Sonarqube版本 9.9.3.79811
 # 
 # 构建镜像 RELEASE_URL 这个是sonarqube的发行包,
 # 由于太大,所以建议下载到本地后指定URL方式更快一些,不指定这个URL则 使用官方URL下载
-# 
+# 详见 build.sh
 ./build.sh
 
 # 运行镜像
@@ -21,6 +21,7 @@ docker run -itd --name sonarqube9 \
 	-e CONF_SONAR_JDBC_USERNAME="sonarqube" \
 	-e CONF_SONAR_JDBC_PASSWORD="sonarqube888" \
 	-e CONF_SONAR_JDBC_URL="jdbc:postgresql://192.168.2.8/sonarqube?currentSchema=public" \
+	-v /Users/Tekin/src:/src \
 	tekintian/sonarqube:9.9.3.79811
 
 # 默认登录地址:  http://localhost:9000/ 账户: admin/admin
@@ -33,12 +34,12 @@ docker run -itd --name sonarqube9 \
 # sonarqube9 是你自己创建的容器名称 sonar-scanner 是容器中的扫描命令 后面是扫描参数
 docker exec -it sonarqube9 sonar-scanner \
 	-Dsonar.projectKey=tpos \
-	-Dsonar.sources=. \
+	-Dsonar.sources=/src/myapp \
 	-Dsonar.host.url=http://192.168.2.8:9000 \
 	-Dsonar.login=sqp_5b9d629200000000000005b9d62925b9d6292
 
 #  tpos 是项目名称
-#  . 这里表示当前目录, 这里是要扫描的项目的路径, 可以是. 也可以是绝对路径
+#  /src/myapp 这里表示的是你的源码的绝对路径, 需要再创建容器的时候通过 -v 加载到容器,否则这里访问不了. 在创建项目的时候就可以使用localy本地模式, 如果使用其他CI就不需要
 #  sqp_5b9d629200000000000005b9d62925b9d6292 这个是你要扫描的项目的token
 #  http://192.168.2.8:9000 是sonarqube的服务地址和端口
 ~~~
