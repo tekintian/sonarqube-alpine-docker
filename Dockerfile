@@ -1,4 +1,5 @@
-FROM tekintian/alpine-jre:17.0.9_3.17_jar
+ARG JRE_TAG=17.0.9_3.17_jar
+FROM tekintian/alpine-jre:${JRE_TAG}
 
 LABEL org.opencontainers.image.url=https://github.com/tekintian/sonarqube-alpine-docker
 
@@ -15,8 +16,7 @@ ARG user=sonarqube \
     uid=1000 \
     gid=1000
 
-ENV JAVA_HOME='/usr/local/java/jre' \
-    SONARQUBE_HOME=/opt/sonarqube \
+ENV SONARQUBE_HOME=/opt/sonarqube \
     SONAR_SCANNER_HOME=/opt/sonar-scanner \
     USER_CACHE_DIR=/opt/sonarqube/.sonar/cache \
     SCANNERWORK_DIR=/opt/sonarqube/.scannerwork \
@@ -63,12 +63,12 @@ RUN set -eux \
   && echo "networkaddress.cache.ttl=5" >> "${JAVA_HOME}/conf/security/java.security" \
   && sed --in-place --expression="s?securerandom.source=file:/dev/random?securerandom.source=file:/dev/urandom?g" "${JAVA_HOME}/conf/security/java.security" \
   \
-  && mkdir -p ${USER_CACHE_DIR} ${SCANNERWORK_DIR} \
+  && mkdir -p ${USER_CACHE_DIR} ${SCANNERWORK_DIR} ${SONAR_SCANNER_HOME} \
   # 添加用户和给目录授权
   && addgroup --gid ${gid} ${group} \
   && adduser --uid ${uid} -G ${group} ${user} -h ${SONARQUBE_HOME} -s /sbin/nologin -D \
   \
-  && chown -R ${uid}:${gid} ${SONARQUBE_HOME} ${SONAR_SCANNER_HOME} \
+  && chown -R ${uid}:${gid} ${SONARQUBE_HOME}  ${SONAR_SCANNER_HOME}\
   \
   && chmod -R 0555 ${SONARQUBE_HOME} ${SONAR_SCANNER_HOME} \
   && chmod -R 0777 "${SQ_DATA_DIR}" "${SQ_EXTENSIONS_DIR}" "${SQ_LOGS_DIR}" "${SQ_TEMP_DIR}" "${USER_CACHE_DIR}" "${SCANNERWORK_DIR}" \

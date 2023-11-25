@@ -60,7 +60,10 @@ findjava() {
 
 findjava
 
-if [ -z "${HAZELCAST_ADDITIONAL}" ]; then
+# 获取JAVA主版本号
+JAVA_MAIN_VER=$(java -version 2>&1 |awk 'NR==1{print $3}'|sed 's/"//g'|cut -d. -f1)
+
+if [[ -z "${HAZELCAST_ADDITIONAL}" && "${JAVA_MAIN_VER}" != "1" ]]; then
   HAZELCAST_ADDITIONAL="--add-exports=java.base/jdk.internal.ref=ALL-UNNAMED \
   --add-opens=java.base/java.lang=ALL-UNNAMED \
   --add-opens=java.base/java.nio=ALL-UNNAMED \
