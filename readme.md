@@ -203,7 +203,7 @@ Manually setting branch parameters overrides automatic detection.
 ` tekintian/sonarqube:{SONARQUBE版本号}_{JDK版本号} `
 
 版本列表:
-
+~~~sh
 tekintian/sonarqube:10.3.0.82913_17.0
 tekintian/sonarqube:9.9.3.79811_17.0
 tekintian/sonarqube:9.8.0.63668_17.0
@@ -215,18 +215,18 @@ tekintian/sonarqube:8.9.10.61524_17.0
 tekintian/sonarqube:7.9.6_11.0
 
 
-引用的JDK版本
+#引用的JDK版本
 tekintian/alpine-jre:11.0.21_3.17_jar
 tekintian/alpine-jre:17.0.9_3.17_jar
 
-sonarqube5 6使用的jdk版本
-tekintian/alpine-jre:8u265-1-tse
+# sonarqube5 6使用的jdk版本
+# tekintian/alpine-jre:8u265-1-tse
 
 tekintian/sonarqube:5.6.7
 tekintian/sonarqube:6.7.7
 tekintian/sonarqube:5.6
 tekintian/sonarqube:6.5
-
+~~~
 
 
 ## vscode 集成
